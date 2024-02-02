@@ -1,0 +1,13 @@
+*           text=auto
+
+*.sln       text encoding=UTF-8-BOM eol=crlf
+*.csproj    text encoding=UTF-8-BOM eol=crlf
+
+*.props     text encoding=UTF-8-BOM eol=crlf
+*.targets   text encoding=UTF-8-BOM eol=crlf
+
+*.cs        text encoding=UTF-8 diff=csharp
+*.cshtml    text encoding=UTF-8 diff=html
+*.csx       text encoding=UTF-8 diff=csharp
+
+*.json      text encoding=UTF-8 diff=json
