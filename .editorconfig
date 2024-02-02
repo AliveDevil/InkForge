@@ -6,7 +6,7 @@ indent_style = space
 charset = utf-8
 
 # Xml files
-[*.xml]
+[*.{xml,sln,csproj,props,targets}]
 indent_size = 2
 
 [*.sln]
