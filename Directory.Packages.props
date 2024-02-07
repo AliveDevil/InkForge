@@ -4,6 +4,10 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Avalonia" Version="11.0.7" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.0.7" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.0.7" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.0.7" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
@@ -12,7 +16,11 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+    <PackageVersion Include="Splat.Microsoft.Extensions.DependencyInjection" Version="14.8.12" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageVersion Include="System.IO.Hashing" Version="8.0.0" />
   </ItemGroup>
