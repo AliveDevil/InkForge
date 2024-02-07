@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>InkForge.Sqlite</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -12,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\InkForge.Data\InkForge.Data.csproj" />
+    <ProjectReference Include="..\..\InkForge.Api.Data\InkForge.Api.Data.csproj" />
   </ItemGroup>
 
 </Project>
