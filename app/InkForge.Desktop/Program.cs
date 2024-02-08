@@ -5,7 +5,6 @@ using Avalonia.Threading;
 using InkForge.Common;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 using ReactiveUI;
 
@@ -17,7 +16,7 @@ static class Program
 	[STAThread]
 	public static void Main(string[] args)
 		=> BuildAvaloniaApp()
-			.UseMicrosoftExtensionsHosting(args)
+			.UseMicrosoftDependencyInjection(args)
 			.StartWithClassicDesktopLifetime(args);
 
 	public static AppBuilder BuildAvaloniaApp()
@@ -40,39 +39,28 @@ static class Program
 		// services.AddTransient<IViewFor<MainViewModel>, MainWindow>();
 	}
 
-	private static void OnSetup(this HostApplicationBuilder hostBuilder, AppBuilder appBuilder)
+	private static void OnSetup(this IServiceCollection services, AppBuilder appBuilder)
 	{
 		var dispatcher = Dispatcher.UIThread;
 
 		var app = appBuilder.Instance!;
-		hostBuilder.Services
+		services
 			.AddSingleton(app)
 			.AddSingleton(app.ApplicationLifetime!)
 			.AddSingleton(app.PlatformSettings!)
 			.AddSingleton(dispatcher);
 
-		var host = hostBuilder.Build();
-		host.Services.UseMicrosoftDependencyResolver();
-		app.SetValue(App.HostProperty, host);
-		dispatcher.ShutdownStarted += host.Shutdown;
-
-		dispatcher.Post(static arg =>
-		{
-			var host = (IHost)arg!;
-			host.StartAsync()
-				.GetAwaiter()
-				.GetResult();
-		}, host, DispatcherPriority.Send);
+		var serviceProvider = services.BuildServiceProvider();
+		serviceProvider.UseMicrosoftDependencyResolver();
+		app.SetValue(App.ServiceProviderProperty, serviceProvider);
+		dispatcher.ShutdownFinished += (_, _) => serviceProvider.Dispose();
 	}
 
-	private static void Shutdown(this IHost host, object? sender, EventArgs e)
-		=> host.StopAsync().GetAwaiter().GetResult();
-
-	private static AppBuilder UseMicrosoftExtensionsHosting(this AppBuilder builder, string[] args)
+	private static AppBuilder UseMicrosoftDependencyInjection(this AppBuilder builder, string[] args)
 	{
-		var hostBuilder = Host.CreateApplicationBuilder(args);
-		ConfigureServices(hostBuilder.Services);
-		builder.AfterSetup(hostBuilder.OnSetup);
+		ServiceCollection services = [];
+		ConfigureServices(services);
+		builder.AfterSetup(services.OnSetup);
 		return builder;
 	}
 }

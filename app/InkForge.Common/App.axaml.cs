@@ -3,19 +3,15 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
-using Microsoft.Extensions.Hosting;
-
 using ReactiveUI;
 
 namespace InkForge.Common;
 
 public partial class App : Application
 {
-	public static readonly StyledProperty<IHost> HostProperty = AvaloniaProperty.Register<App, IHost>("Host");
+	public static readonly StyledProperty<IServiceProvider> ServiceProviderProperty = AvaloniaProperty.Register<App, IServiceProvider>(nameof(ServiceProvider));
 
-	public IHost Host => GetValue(HostProperty);
-
-	public IServiceProvider Services => Host.Services;
+	public IServiceProvider ServiceProvider => GetValue(ServiceProviderProperty);
 
 	public override void Initialize()
 	{
