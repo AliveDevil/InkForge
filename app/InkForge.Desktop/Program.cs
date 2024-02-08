@@ -16,7 +16,7 @@ static class Program
 	[STAThread]
 	public static void Main(string[] args)
 		=> BuildAvaloniaApp()
-			.UseMicrosoftDependencyInjection(args)
+			.UseMicrosoftDependencyInjection()
 			.StartWithClassicDesktopLifetime(args);
 
 	public static AppBuilder BuildAvaloniaApp()
@@ -56,7 +56,7 @@ static class Program
 		dispatcher.ShutdownFinished += (_, _) => serviceProvider.Dispose();
 	}
 
-	private static AppBuilder UseMicrosoftDependencyInjection(this AppBuilder builder, string[] args)
+	private static AppBuilder UseMicrosoftDependencyInjection(this AppBuilder builder)
 	{
 		ServiceCollection services = [];
 		ConfigureServices(services);
