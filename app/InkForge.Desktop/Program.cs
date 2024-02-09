@@ -3,7 +3,9 @@ using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 
 using InkForge.Common;
+using InkForge.Common.ViewModels;
 using InkForge.Data;
+using InkForge.Desktop.Views;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,6 +37,8 @@ static class Program
 		mutableResolver.InitializeReactiveUI();
 
 		services.AddInkForge();
+
+		services.AddTransient<IViewFor<AppViewModel>, MainWindow>();
 	}
 
 	private static void OnSetup(this IServiceCollection services, AppBuilder appBuilder)
