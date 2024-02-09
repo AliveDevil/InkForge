@@ -11,3 +11,5 @@
 *.csx       text encoding=UTF-8 diff=csharp
 
 *.json      text encoding=UTF-8 diff=json
+
+*.axaml     text encoding=UTF-8 diff=xml

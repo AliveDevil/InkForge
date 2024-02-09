@@ -16,5 +16,6 @@ public class AppViewModel : ReactiveObject
 
 	public AppViewModel(WorkspaceController workspace)
 	{
+		View = new LandingViewModel();
 	}
 }

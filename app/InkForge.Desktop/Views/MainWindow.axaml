@@ -2,8 +2,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:ifcvm="using:InkForge.Common.ViewModels"
+        xmlns:reactiveui="http://reactiveui.net"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
         x:Class="InkForge.Desktop.Views.MainWindow"
+        x:DataType="ifcvm:AppViewModel"
         Title="InkForge">
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem Header="Test" />
+        </NativeMenu>
+    </NativeMenu.Menu>
 
+    <DockPanel>
+        <NativeMenuBar />
+
+        <reactiveui:ViewModelViewHost ViewModel="{CompiledBinding View}" />
+    </DockPanel>
 </Window>

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Dock.Avalonia" />
     <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
