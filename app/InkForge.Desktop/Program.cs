@@ -1,8 +1,9 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 
 using InkForge.Common;
+using InkForge.Data;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,6 +24,7 @@ static class Program
 		=> AppBuilder.Configure<App>()
 			.UsePlatformDetect()
 			.UseReactiveUI()
+			.WithInterFont()
 			.LogToTrace();
 
 	private static void ConfigureServices(IServiceCollection services)
@@ -32,11 +34,7 @@ static class Program
 		mutableResolver.InitializeSplat();
 		mutableResolver.InitializeReactiveUI();
 
-		services.AddHttpClient();
-
-		// services.UseFactories();
-		// services.AddViewModelFactory();
-		// services.AddTransient<IViewFor<MainViewModel>, MainWindow>();
+		services.AddInkForge();
 	}
 
 	private static void OnSetup(this IServiceCollection services, AppBuilder appBuilder)

@@ -3,6 +3,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
+using InkForge.Common.ViewModels;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using ReactiveUI;
 
 namespace InkForge.Common;
@@ -20,21 +24,15 @@ public partial class App : Application
 
 	public override void OnFrameworkInitializationCompleted()
 	{
-		// var viewModel = Services.Activate<MainViewModel>();
-		// var view = ViewLocator.Current.ResolveView(viewModel);
-		// switch (ApplicationLifetime)
-		// {
-		// 	case IClassicDesktopStyleApplicationLifetime desktop:
-		// 		desktop.MainWindow = view as Window;
-		// 		break;
-
-		// 	case ISingleViewApplicationLifetime singleView:
-		// 		singleView.MainView = view as Control;
-		// 		break;
-
-		// 	default:
-		// 		throw new NotSupportedException();
-		// }
+		var viewModel = ActivatorUtilities.GetServiceOrCreateInstance<AppViewModel>(ServiceProvider);
+		var view = ViewLocator.Current.ResolveView(viewModel)!;
+		view.ViewModel = viewModel;
+		_ = ApplicationLifetime switch
+		{
+			IClassicDesktopStyleApplicationLifetime desktop => desktop.MainWindow = view as Window,
+			ISingleViewApplicationLifetime singleView => singleView.MainView = view as Control,
+			_ => throw new NotSupportedException(),
+		};
 
 		base.OnFrameworkInitializationCompleted();
 	}
