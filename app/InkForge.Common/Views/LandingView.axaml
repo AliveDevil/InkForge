@@ -13,6 +13,7 @@
     <Label Content="InkForge"
            Grid.Row="0" />
 
-    <reactiveui:RoutedViewHost Router="{CompiledBinding Router}" />
+    <reactiveui:RoutedViewHost Router="{CompiledBinding Router}"
+                               Grid.Row="1" />
   </Grid>
 </UserControl>

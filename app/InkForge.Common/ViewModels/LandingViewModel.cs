@@ -17,8 +17,9 @@ public class LandingViewModel : ReactiveObject, IScreen
 	public LandingViewModel(LandingViewModelFactory factory)
 	{
 		_factory = factory;
-		
+
 		Router.CurrentViewModel.Where(x => x is null)
+			.SelectMany(Observable.Return(factory.Create<OpenRecentViewModel>(this)))
 			.InvokeCommand<IRoutableViewModel>(Router.NavigateAndReset);
 	}
 

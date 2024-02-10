@@ -1,3 +1,4 @@
+using InkForge.Common.Controllers;
 using InkForge.Common.ReactiveUI;
 
 using ReactiveUI;
@@ -8,7 +9,15 @@ public class CreateWorkspaceViewModel : LandingViewModelBase
 {
 	public override string? UrlPathSegment => null;
 
-	public CreateWorkspaceViewModel(LandingViewModel landing) : base(landing)
+	private string workspaceName;
+
+	public string WorkspaceName
+	{
+		get => workspaceName;
+		set => this.RaiseAndSetIfChanged(ref workspaceName, value);
+	}
+
+	public CreateWorkspaceViewModel(LandingViewModel landing, WorkspaceController workspace) : base(landing)
 	{
 	}
 }
