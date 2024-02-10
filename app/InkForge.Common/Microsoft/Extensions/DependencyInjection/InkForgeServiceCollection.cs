@@ -1,6 +1,7 @@
 using InkForge.Common.Controllers;
 using InkForge.Common.Data;
 using InkForge.Common.ViewModels;
+using InkForge.Common.ViewModels.Landing;
 using InkForge.Common.Views;
 using InkForge.Data;
 
@@ -16,6 +17,8 @@ public static class InkForgeServiceCollections
 
 		services.AddDbContextFactory<NoteDbContext, NoteDbContextFactory>();
 
+		services.AddSingleton<LandingViewModel>();
+		services.AddSingleton<LandingViewModelFactory>();
 		services.AddSingleton<WorkspaceController>();
 
 		services.AddTransient<IViewFor<LandingViewModel>, LandingView>();

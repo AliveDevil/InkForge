@@ -14,8 +14,8 @@ public class AppViewModel : ReactiveObject
 		set => this.RaiseAndSetIfChanged(ref _view, value);
 	}
 
-	public AppViewModel(WorkspaceController workspace)
+	public AppViewModel(WorkspaceController workspace, LandingViewModel landingViewModel)
 	{
-		View = new LandingViewModel();
+		View = landingViewModel;
 	}
 }
