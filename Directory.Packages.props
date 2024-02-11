@@ -2,7 +2,6 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-
     <AvaloniaVersion>11.0.9</AvaloniaVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -21,7 +20,10 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
     <PackageVersion Include="ReactiveUI" Version="19.5.41" />

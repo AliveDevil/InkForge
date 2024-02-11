@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="Dock.Avalonia" />
-    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" />
   </ItemGroup>
 
   <ItemGroup>

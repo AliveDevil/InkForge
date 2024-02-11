@@ -1,26 +1,31 @@
 using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 
 using InkForge.Common;
 using InkForge.Common.ViewModels;
-using InkForge.Data;
 using InkForge.Desktop.Views;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using ReactiveUI;
 
-using Splat;
-using Splat.Microsoft.Extensions.DependencyInjection;
-
 static class Program
 {
+	private static readonly ConfigurationManager Configuration = new();
+
 	[STAThread]
 	public static void Main(string[] args)
 		=> BuildAvaloniaApp()
 			.UseMicrosoftDependencyInjection()
-			.StartWithClassicDesktopLifetime(args);
+			.StartWithClassicDesktopLifetime(args, WithMicrosoftDependencyInjection);
+
+	private static void WithMicrosoftDependencyInjection(IClassicDesktopStyleApplicationLifetime lifetime)
+	{
+		Configuration.AddCommandLine(lifetime.Args ?? []);
+	}
 
 	public static AppBuilder BuildAvaloniaApp()
 		=> AppBuilder.Configure<App>()
@@ -31,20 +36,12 @@ static class Program
 
 	private static void ConfigureServices(IServiceCollection services)
 	{
-		services.UseMicrosoftDependencyResolver();
-		var mutableResolver = Locator.CurrentMutable;
-		mutableResolver.InitializeSplat();
-		mutableResolver.InitializeReactiveUI();
-
-		services.AddInkForge();
-
 		services.AddTransient<IViewFor<AppViewModel>, MainWindow>();
 	}
 
 	private static void OnSetup(this IServiceCollection services, AppBuilder appBuilder)
 	{
 		var dispatcher = Dispatcher.UIThread;
-
 		var app = appBuilder.Instance!;
 		services
 			.AddSingleton(app)
@@ -52,8 +49,9 @@ static class Program
 			.AddSingleton(app.PlatformSettings!)
 			.AddSingleton(dispatcher);
 
+		ConfigureServices(services);
+
 		var serviceProvider = services.BuildServiceProvider();
-		serviceProvider.UseMicrosoftDependencyResolver();
 		app.SetValue(App.ServiceProviderProperty, serviceProvider);
 		dispatcher.ShutdownFinished += (_, _) => serviceProvider.Dispose();
 	}
@@ -61,7 +59,8 @@ static class Program
 	private static AppBuilder UseMicrosoftDependencyInjection(this AppBuilder builder)
 	{
 		ServiceCollection services = [];
-		ConfigureServices(services);
+		App.Configure(services, Configuration);
+
 		builder.AfterSetup(services.OnSetup);
 		return builder;
 	}
