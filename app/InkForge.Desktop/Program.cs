@@ -3,29 +3,18 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 
-using InkForge.Common;
-using InkForge.Common.ViewModels;
-using InkForge.Desktop.Views;
+using InkForge.Desktop;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using ReactiveUI;
-
 static class Program
 {
-	private static readonly ConfigurationManager Configuration = new();
-
 	[STAThread]
 	public static void Main(string[] args)
 		=> BuildAvaloniaApp()
-			.UseMicrosoftDependencyInjection()
-			.StartWithClassicDesktopLifetime(args, WithMicrosoftDependencyInjection);
-
-	private static void WithMicrosoftDependencyInjection(IClassicDesktopStyleApplicationLifetime lifetime)
-	{
-		Configuration.AddCommandLine(lifetime.Args ?? []);
-	}
+			.UseMicrosoftDependencyInjection(out var configuration)
+			.StartWithClassicDesktopLifetime(args, configuration.WithMicrosoftDependencyInjection);
 
 	public static AppBuilder BuildAvaloniaApp()
 		=> AppBuilder.Configure<App>()
@@ -34,12 +23,7 @@ static class Program
 			.WithInterFont()
 			.LogToTrace();
 
-	private static void ConfigureServices(IServiceCollection services)
-	{
-		services.AddTransient<IViewFor<AppViewModel>, MainWindow>();
-	}
-
-	private static void OnSetup(this IServiceCollection services, AppBuilder appBuilder)
+	private static void SetupApp(this IServiceCollection services, AppBuilder appBuilder)
 	{
 		var dispatcher = Dispatcher.UIThread;
 		var app = appBuilder.Instance!;
@@ -49,19 +33,52 @@ static class Program
 			.AddSingleton(app.PlatformSettings!)
 			.AddSingleton(dispatcher);
 
-		ConfigureServices(services);
-
 		var serviceProvider = services.BuildServiceProvider();
 		app.SetValue(App.ServiceProviderProperty, serviceProvider);
-		dispatcher.ShutdownFinished += (_, _) => serviceProvider.Dispose();
+		_ = new ServiceProviderDisposer(serviceProvider, dispatcher);
 	}
 
-	private static AppBuilder UseMicrosoftDependencyInjection(this AppBuilder builder)
+	private static AppBuilder UseMicrosoftDependencyInjection(this AppBuilder builder, out ConfigurationManager configuration)
 	{
+		configuration = new();
 		ServiceCollection services = [];
-		App.Configure(services, Configuration);
+		services.AddSingleton<IConfiguration>(configuration);
+		App.Configure(services, configuration);
 
-		builder.AfterSetup(services.OnSetup);
+		builder.AfterSetup(services.SetupApp);
 		return builder;
+	}
+
+	private static void WithMicrosoftDependencyInjection(this ConfigurationManager configuration, IClassicDesktopStyleApplicationLifetime lifetime)
+	{
+		configuration.AddCommandLine(lifetime.Args ?? []);
+	}
+
+	private class ServiceProviderDisposer
+	{
+		private readonly ServiceProvider _serviceProvider;
+		private readonly TaskCompletionSource<ValueTask> _shutdownTask = new();
+
+		public ServiceProviderDisposer(ServiceProvider serviceProvider, Dispatcher dispatcher)
+		{
+			dispatcher.ShutdownStarted += OnShutdownStarted;
+			dispatcher.ShutdownFinished += OnShutdownFinished;
+			_serviceProvider = serviceProvider;
+		}
+
+		private void OnShutdownFinished(object? sender, EventArgs e)
+		{
+			if (_shutdownTask.Task.Result is { IsCompleted: false } disposeTask)
+			{
+				disposeTask.GetAwaiter().GetResult();
+			}
+		}
+
+		private void OnShutdownStarted(object? sender, EventArgs e)
+		{
+#pragma warning disable CA2012 // This will only ever be awaited once in ShutdownFinished
+			_shutdownTask.SetResult(_serviceProvider.DisposeAsync());
+#pragma warning restore CA2012
+		}
 	}
 }

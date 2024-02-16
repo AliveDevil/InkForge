@@ -3,22 +3,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:reactiveui="http://reactiveui.net"
-        xmlns:ifcvm="using:InkForge.Common.ViewModels"
+        xmlns:vm="using:InkForge.Desktop.ViewModels"
         mc:Ignorable="d"
         d:DesignWidth="800"
         d:DesignHeight="450"
         x:Class="InkForge.Desktop.Views.MainWindow"
-        x:DataType="ifcvm:AppViewModel"
-        Title="InkForge">
-    <NativeMenu.Menu>
-        <NativeMenu>
-            <NativeMenuItem Header="Test" />
-        </NativeMenu>
-    </NativeMenu.Menu>
+        x:DataType="vm:AppViewModel"
+        Title="MainWindow">
+  <DockPanel>
+    <NativeMenuBar />
 
-    <DockPanel>
-        <NativeMenuBar />
-
-        <reactiveui:ViewModelViewHost ViewModel="{CompiledBinding View}" />
-    </DockPanel>
+    <reactiveui:ViewModelViewHost ViewModel="{CompiledBinding View}" />
+  </DockPanel>
 </Window>

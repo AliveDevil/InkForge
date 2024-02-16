@@ -4,9 +4,9 @@ using InkForge.Desktop.ViewModels;
 
 namespace InkForge.Desktop.Views;
 
-public partial class MainWindow : ReactiveWindow<AppViewModel>
+public partial class WorkspaceView : ReactiveUserControl<WorkspaceViewModel>
 {
-	public MainWindow()
+	public WorkspaceView()
 	{
 		InitializeComponent();
 	}

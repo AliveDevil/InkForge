@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:reactiveui="http://reactiveui.net"
+             xmlns:vm="using:InkForge.Desktop.ViewModels"
+             xmlns:services="using:InkForge.Desktop.Services"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="InkForge.Desktop.Views.LandingView"
+             x:DataType="vm:LandingViewModel"
+             services:TopLevels.Register="{CompiledBinding}">
+  <Grid RowDefinitions="Auto, *, Auto">
+    <Label Content="Open Recent"
+           Grid.Row="0" />
+
+    <DataGrid IsEnabled="False"
+              IsReadOnly="True"
+              ItemsSource="{CompiledBinding RecentItems}"
+              Grid.Row="1">
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="Created"
+                            Binding="{CompiledBinding Created, StringFormat={}{0:d}}" />
+        <DataGridTextColumn Header="Name"
+                            Width="*"
+                            Binding="{CompiledBinding Name}" />
+        <DataGridTextColumn Header="Last Used"
+                            Binding="{CompiledBinding LastUsed, StringFormat={}{0:d}}" />
+      </DataGrid.Columns>
+    </DataGrid>
+
+    <Menu Grid.Row="2">
+      <MenuItem Header="Create New"
+                Command="{CompiledBinding CreateNew}" />
+      <MenuItem Header="Open"
+                IsEnabled="False" />
+      <MenuItem Header="Open File"
+                Command="{CompiledBinding OpenNew}" />
+    </Menu>
+  </Grid>
+</UserControl>

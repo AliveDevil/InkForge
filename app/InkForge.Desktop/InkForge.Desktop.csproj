@@ -6,16 +6,32 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>InkForge</AssemblyName>
+    <RootNamespace>InkForge.Desktop</RootNamespace>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Avalonia.Controls.DataGrid" />
     <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="Avalonia.ReactiveUI" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Dock.Avalonia" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="SmartFormat" />
+    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InkForge.Common\InkForge.Common.csproj" />
+    <ProjectReference Include="..\..\shared\InkForge.Data\InkForge.Data.csproj" />
+    <ProjectReference Include="..\..\shared\migrations\InkForge.Sqlite\InkForge.Sqlite.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\appsettings.json" />
   </ItemGroup>
 
 </Project>
