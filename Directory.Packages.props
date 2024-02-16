@@ -3,6 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <AvaloniaVersion>11.0.9</AvaloniaVersion>
+    <DotNetVersion>8.0.2</DotNetVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
@@ -12,23 +13,24 @@
     <PackageVersion Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Dock.Avalonia" Version="11.0.0.5" />
-    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(DotNetVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="$(DotNetVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(DotNetVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Abstractions" Version="$(DotNetVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(DotNetVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="$(DotNetVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(DotNetVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="$(DotNetVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Embedded" Version="$(DotNetVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.1" />
     <PackageVersion Include="ReactiveUI" Version="19.5.41" />
+    <PackageVersion Include="SmartFormat" Version="3.3.2" />
     <PackageVersion Include="Splat.Microsoft.Extensions.DependencyInjection" Version="14.8.12" />
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageVersion Include="System.IO.Hashing" Version="8.0.0" />
   </ItemGroup>
 </Project>
