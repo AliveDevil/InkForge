@@ -3,6 +3,7 @@ using System;
 using InkForge.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,12 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InkForge.Sqlite.Migrations
 {
     [DbContext(typeof(NoteDbContext))]
-    partial class NoteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240207000000__01_Initial")]
+    partial class _01_Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
             modelBuilder.Entity("InkForge.Data.Blob", b =>
                 {
@@ -31,44 +34,9 @@ namespace InkForge.Sqlite.Migrations
                     b.ToTable("Blobs");
                 });
 
-            modelBuilder.Entity("InkForge.Data.Infrastructure.MetadataEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Metadata");
-                });
-
-            modelBuilder.Entity("InkForge.Data.Infrastructure.MetadataVersionEntity", b =>
-                {
-                    b.Property<int?>("Version")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Version");
-
-                    b.HasIndex("Id", "Version")
-                        .IsUnique();
-
-                    b.ToTable("MetadataHistory");
-                });
-
             modelBuilder.Entity("InkForge.Data.Infrastructure.NoteEntity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 

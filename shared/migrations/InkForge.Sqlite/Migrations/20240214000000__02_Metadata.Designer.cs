@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InkForge.Sqlite.Migrations
 {
     [DbContext(typeof(NoteDbContext))]
-    [Migration("20240207000000_Initial")]
-    partial class Initial
+    [Migration("20240214000000__02_Metadata")]
+    partial class _02_Metadata
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
 
             modelBuilder.Entity("InkForge.Data.Blob", b =>
                 {
@@ -34,9 +34,44 @@ namespace InkForge.Sqlite.Migrations
                     b.ToTable("Blobs");
                 });
 
+            modelBuilder.Entity("InkForge.Data.Infrastructure.MetadataEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Metadata");
+                });
+
+            modelBuilder.Entity("InkForge.Data.Infrastructure.MetadataVersionEntity", b =>
+                {
+                    b.Property<int?>("Version")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Version");
+
+                    b.HasIndex("Id", "Version")
+                        .IsUnique();
+
+                    b.ToTable("MetadataHistory");
+                });
+
             modelBuilder.Entity("InkForge.Data.Infrastructure.NoteEntity", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
