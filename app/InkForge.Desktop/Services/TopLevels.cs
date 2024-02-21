@@ -1,3 +1,5 @@
+using System.Reactive.Linq;
+
 using Avalonia;
 using Avalonia.Controls;
 
@@ -7,12 +9,14 @@ public class TopLevels
 {
 	public static readonly AttachedProperty<object?> RegisterProperty
 		= AvaloniaProperty.RegisterAttached<TopLevels, Visual, object?>("Register");
-
 	private static readonly Dictionary<object, Visual> RegistrationMapper = [];
+
+	public static TopLevel? ActiveTopLevel { get; private set; }
 
 	static TopLevels()
 	{
 		RegisterProperty.Changed.AddClassHandler<Visual>(RegisterChanged);
+		WindowBase.IsActiveProperty.Changed.Subscribe(WindowActiveChanged);
 	}
 
 	public static object? GetRegister(AvaloniaObject element)
@@ -50,5 +54,15 @@ public class TopLevels
 		{
 			RegistrationMapper.Add(e.NewValue, sender);
 		}
+	}
+
+	private static void WindowActiveChanged(AvaloniaPropertyChangedEventArgs<bool> e)
+	{
+		ActiveTopLevel = (e.GetOldAndNewValue<bool>(), e.Sender) switch
+		{
+			((false, true), TopLevel topLevel) => topLevel,
+			((true, false), { } topLevel) when topLevel == ActiveTopLevel => null,
+			_ => ActiveTopLevel,
+		};
 	}
 }

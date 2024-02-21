@@ -23,11 +23,16 @@
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="SmartFormat" />
     <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="System.IO.Hashing" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\shared\InkForge.Data\InkForge.Data.csproj" />
     <ProjectReference Include="..\..\shared\migrations\InkForge.Sqlite\InkForge.Sqlite.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Metadata;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 

@@ -1,4 +1,4 @@
-using InkForge.Desktop.Controllers;
+using InkForge.Desktop.Managers;
 using InkForge.Desktop.Models;
 
 using ReactiveUI;
@@ -8,7 +8,7 @@ namespace InkForge.Desktop.ViewModels;
 public class AppViewModel : ReactiveObject
 {
 	private readonly LandingViewModel _landingViewModel;
-	private readonly WorkspaceController _workspace;
+	private readonly WorkspaceManager _workspace;
 	private object _view;
 
 	public object View
@@ -17,7 +17,7 @@ public class AppViewModel : ReactiveObject
 		set => this.RaiseAndSetIfChanged(ref _view, value);
 	}
 
-	public AppViewModel(WorkspaceController workspace, LandingViewModel landingViewModel)
+	public AppViewModel(WorkspaceManager workspace, LandingViewModel landingViewModel)
 	{
 		_workspace = workspace;
 		_landingViewModel = landingViewModel;

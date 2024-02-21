@@ -1,14 +1,14 @@
-using InkForge.Desktop.Services;
 using InkForge.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 using SmartFormat;
+using InkForge.Desktop.Data.Options;
 
 namespace InkForge.Desktop.Data;
 
-public class NoteDbContextFactory(WorkspaceContext context, IConfiguration configuration) : IDbContextFactory<NoteDbContext>
+public class NoteDbContextFactory(LocalWorkspaceOptions options, IConfiguration configuration) : IDbContextFactory<NoteDbContext>
 {
 	private string? _connectionString;
 
@@ -16,7 +16,7 @@ public class NoteDbContextFactory(WorkspaceContext context, IConfiguration confi
 	{
 		_connectionString ??= Smart.Format(configuration.GetConnectionString("DefaultConnection")!, new
 		{
-			WorkspaceFile = context.DbPath
+			WorkspaceFile = options.DbPath
 		});
 
 		DbContextOptionsBuilder<NoteDbContext> builder = new();

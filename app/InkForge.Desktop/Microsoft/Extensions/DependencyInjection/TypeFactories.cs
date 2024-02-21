@@ -1,19 +1,19 @@
 namespace Microsoft.Extensions.DependencyInjection
 {
-	public static class TypeFactory<TFactory, T>
-		where TFactory : struct, IObjectParameters<TFactory>
+	public static class TypeFactory<TArguments, T>
+		where TArguments : IFactoryArguments<TArguments>
 	{
 		private static ObjectFactory<T>? s_objectFactory;
 
-		public static T Create(in TFactory factory, IServiceProvider serviceProvider)
+		public static T Create(IServiceProvider serviceProvider, in TArguments factory)
 		{
-			s_objectFactory ??= ActivatorUtilities.CreateFactory<T>(TFactory.Types);
+			s_objectFactory ??= ActivatorUtilities.CreateFactory<T>(TArguments.Types);
 			return s_objectFactory(serviceProvider, (object[])factory);
 		}
 	}
 
-	public interface IObjectParameters<T>
-		where T : struct, IObjectParameters<T>
+	public interface IFactoryArguments<T>
+		where T : IFactoryArguments<T>
 	{
 		abstract static Type[] Types { get; }
 

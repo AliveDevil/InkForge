@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Metadata;
 
 using InkForge.Desktop.ViewModels;
 
@@ -13,6 +14,11 @@ using ReactiveUI;
 
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
+
+[assembly: XmlnsPrefix("app:InkForge", "inkforge")]
+[assembly: XmlnsDefinition("app:InkForge", "InkForge.Desktop.Controls")]
+[assembly: XmlnsDefinition("app:InkForge", "InkForge.Desktop.MarkupExtensions")]
+[assembly: XmlnsDefinition("app:InkForge", "InkForge.Desktop.Services")]
 
 namespace InkForge.Desktop;
 
@@ -54,6 +60,7 @@ public partial class App : Application
 
 	public override void OnFrameworkInitializationCompleted()
 	{
+		// This kills Avalonia VSCode Previewer.
 		var viewModel = ActivatorUtilities.GetServiceOrCreateInstance<AppViewModel>(ServiceProvider);
 		var view = ViewLocator.Current.ResolveView(viewModel)!;
 		view.ViewModel = viewModel;

@@ -1,3 +1,4 @@
+using Avalonia.Input;
 using Avalonia.ReactiveUI;
 
 using InkForge.Desktop.ViewModels;

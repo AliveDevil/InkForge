@@ -2,10 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="InkForge.Desktop.App"
              RequestedThemeVariant="Default">
-    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>
         <FluentTheme />
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
     </Application.Styles>
+
+    <Application.Resources>
+        <FontFamily x:Key="FluentSystemIcons-Filled">/Assets/Fonts#FluentSystemIcons-Filled</FontFamily>
+        <FontFamily x:Key="FluentSystemIcons-Regular">/Assets/Fonts#FluentSystemIcons-Regular</FontFamily>
+    </Application.Resources>
 </Application>

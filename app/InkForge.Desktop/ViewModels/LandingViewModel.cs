@@ -3,7 +3,7 @@ using System.Reactive;
 
 using Avalonia.Platform.Storage;
 
-using InkForge.Desktop.Controllers;
+using InkForge.Desktop.Managers;
 using InkForge.Desktop.Services;
 
 using ReactiveUI;
@@ -13,7 +13,7 @@ namespace InkForge.Desktop.ViewModels;
 public class LandingViewModel : ReactiveObject
 {
 	private ReadOnlyObservableCollection<RecentItemViewModel> _recentItems;
-	private readonly WorkspaceController _workspaceController;
+	private readonly WorkspaceManager _workspaceController;
 
 	public ReactiveCommand<Unit, Unit> CreateNew { get; }
 
@@ -21,7 +21,7 @@ public class LandingViewModel : ReactiveObject
 
 	public ReadOnlyObservableCollection<RecentItemViewModel> RecentItems => _recentItems;
 
-	public LandingViewModel(WorkspaceController workspaceController)
+	public LandingViewModel(WorkspaceManager workspaceController)
 	{
 		_workspaceController = workspaceController;
 		CreateNew = ReactiveCommand.CreateFromTask(OnCreateNew);
