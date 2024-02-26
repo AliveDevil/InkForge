@@ -1,11 +1,8 @@
-using Avalonia.Input;
-using Avalonia.ReactiveUI;
-
-using InkForge.Desktop.ViewModels;
+using Avalonia.Controls;
 
 namespace InkForge.Desktop.Views;
 
-public partial class MainWindow : ReactiveWindow<AppViewModel>
+public partial class MainWindow : Window
 {
 	public MainWindow()
 	{

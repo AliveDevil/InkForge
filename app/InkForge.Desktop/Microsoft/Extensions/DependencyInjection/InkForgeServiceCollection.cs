@@ -1,6 +1,7 @@
 using InkForge.Data;
 using InkForge.Desktop.Data;
 using InkForge.Desktop.Data.Options;
+using InkForge.Desktop.Dock;
 using InkForge.Desktop.Managers;
 using InkForge.Desktop.Models;
 using InkForge.Desktop.ViewModels;
@@ -19,13 +20,23 @@ public static class InkForgeServiceCollections
 	{
 		services.AddHttpClient();
 
-		services.AddScoped<IWorkspaceAccessor, WorkspaceAccessor>();
-		services.AddScoped<IDbContextFactory<NoteDbContext>, NoteDbContextFactory>();
+		// Singletons
+		// - Concrete
+		services.AddSingleton<DocumentManager>();
+		services.AddSingleton<WorkspaceFactory>();
+		services.AddSingleton<WorkspaceManager>();
+		services.AddSingleton<WorkspacesViewModel>();
 
+		// Scoped
+		// - Concrete
 		services.AddScoped<LocalWorkspaceOptions>();
 
-		services.AddSingleton<LandingViewModel>();
-		services.AddSingleton<WorkspaceManager>();
+		// - Service
+		services.AddScoped<IDbContextFactory<NoteDbContext>, NoteDbContextFactory>();
+		services.AddScoped<IWorkspaceContext, WorkspaceContext>();
+
+		// - Forwarders
+		services.AddScoped(s => s.GetRequiredService<IWorkspaceContext>().Workspace!);
 
 		Locator.CurrentMutable.RegisterViewsForViewModels(typeof(InkForgeServiceCollections).Assembly);
 

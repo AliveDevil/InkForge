@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:InkForge.Desktop.ViewModels.Documents"
+             xmlns:inkforge="app:InkForge"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="InkForge.Desktop.Views.Documents.WelcomePageDocument"
+             x:DataType="vm:WelcomePageDocumentViewModel"
+             inkforge:TopLevels.Register="{CompiledBinding}">
+  Welcome to Avalonia!
+</UserControl>

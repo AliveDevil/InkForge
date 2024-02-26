@@ -1,24 +1,16 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Metadata;
 
-using InkForge.Desktop.ViewModels;
+using InkForge.Desktop.Views;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 
 using ReactiveUI;
 
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
-
-[assembly: XmlnsPrefix("app:InkForge", "inkforge")]
-[assembly: XmlnsDefinition("app:InkForge", "InkForge.Desktop.Controls")]
-[assembly: XmlnsDefinition("app:InkForge", "InkForge.Desktop.MarkupExtensions")]
-[assembly: XmlnsDefinition("app:InkForge", "InkForge.Desktop.Services")]
 
 namespace InkForge.Desktop;
 
@@ -31,21 +23,8 @@ public partial class App : Application
 
 	public IServiceProvider ServiceProvider => GetValue(ServiceProviderProperty);
 
-	public static void Configure(IServiceCollection services, IConfigurationManager configuration)
+	public static void Configure(IServiceCollection services)
 	{
-		configuration.SetBasePath(AppContext.BaseDirectory);
-		configuration.AddJsonFile(
-			new ManifestEmbeddedFileProvider(typeof(App).Assembly),
-			"Properties/appsettings.json", false, false);
-		configuration.AddJsonFile(
-			Path.Combine(
-				Environment.GetFolderPath(
-					Environment.SpecialFolder.ApplicationData,
-					Environment.SpecialFolderOption.DoNotVerify),
-				"InkForge",
-				"usersettings.json"), true, true);
-		configuration.AddJsonFile("appsettings.json", true, true);
-
 		services.UseMicrosoftDependencyResolver();
 		Locator.CurrentMutable.InitializeSplat();
 		Locator.CurrentMutable.InitializeReactiveUI();
@@ -60,18 +39,11 @@ public partial class App : Application
 
 	public override void OnFrameworkInitializationCompleted()
 	{
-		// This kills Avalonia VSCode Previewer.
-		var viewModel = ActivatorUtilities.GetServiceOrCreateInstance<AppViewModel>(ServiceProvider);
-		var view = ViewLocator.Current.ResolveView(viewModel)!;
-		view.ViewModel = viewModel;
 		_ = ApplicationLifetime switch
 		{
-			IClassicDesktopStyleApplicationLifetime desktop => desktop.MainWindow = view as Window,
-			ISingleViewApplicationLifetime singleView => singleView.MainView = view as Control,
+			IClassicDesktopStyleApplicationLifetime desktop => desktop.MainWindow = new MainWindow(),
 			_ => throw new NotSupportedException(),
 		};
-
-		base.OnFrameworkInitializationCompleted();
 	}
 
 	private static IServiceProvider OnServiceProviderChanged(AvaloniaObject @object, IServiceProvider provider)

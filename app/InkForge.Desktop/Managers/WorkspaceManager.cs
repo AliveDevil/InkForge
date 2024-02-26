@@ -46,7 +46,7 @@ public class WorkspaceManager(IServiceProvider serviceProvider) : ReactiveObject
 
 		file.Directory!.Create();
 		IServiceScope? scope = null;
-		IWorkspaceAccessor workspaceAccessor;
+		IWorkspaceContext workspaceContext;
 		try
 		{
 			scope = _serviceProvider.CreateScope();
@@ -54,8 +54,8 @@ public class WorkspaceManager(IServiceProvider serviceProvider) : ReactiveObject
 			var options = serviceProvider.GetRequiredService<LocalWorkspaceOptions>();
 			options.DbPath = path;
 
-			workspaceAccessor = serviceProvider.GetRequiredService<IWorkspaceAccessor>();
-			workspaceAccessor.Workspace = new Workspace(scope)
+			workspaceContext = serviceProvider.GetRequiredService<IWorkspaceContext>();
+			workspaceContext.Workspace = new Workspace(scope)
 			{
 				Name = Path.GetFileNameWithoutExtension(file.Name),
 				Options = options,
@@ -87,6 +87,6 @@ public class WorkspaceManager(IServiceProvider serviceProvider) : ReactiveObject
 			scope?.Dispose();
 		}
 
-		return workspaceAccessor.Workspace;
+		return workspaceContext.Workspace;
 	}
 }

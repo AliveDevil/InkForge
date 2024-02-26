@@ -1,11 +1,11 @@
 namespace InkForge.Desktop.Models
 {
-	public interface IWorkspaceAccessor
+	public interface IWorkspaceContext
 	{
 		Workspace? Workspace { get; set; }
 	}
 
-	public class WorkspaceAccessor : IWorkspaceAccessor
+	public class WorkspaceContext : IWorkspaceContext
 	{
 		public Workspace? Workspace { get; set; }
 	}

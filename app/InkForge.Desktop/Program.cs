@@ -1,13 +1,17 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Metadata;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 
 using InkForge.Desktop;
+using InkForge.Desktop.ViewModels;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using ReactiveUI;
 
 static class Program
 {
@@ -44,7 +48,7 @@ static class Program
 		configuration = new();
 		ServiceCollection services = [];
 		services.AddSingleton<IConfiguration>(configuration);
-		App.Configure(services, configuration);
+		App.Configure(services);
 
 		builder.AfterSetup(services.SetupApp);
 		return builder;
@@ -58,18 +62,18 @@ static class Program
 	private class ServiceProviderDisposer
 	{
 		private readonly ServiceProvider _serviceProvider;
-		private readonly TaskCompletionSource<ValueTask> _shutdownTask = new();
+		private ValueTask? _shutdownTask;
 
 		public ServiceProviderDisposer(ServiceProvider serviceProvider, Dispatcher dispatcher)
 		{
-			dispatcher.ShutdownStarted += OnShutdownStarted;
 			dispatcher.ShutdownFinished += OnShutdownFinished;
+			dispatcher.ShutdownStarted += OnShutdownStarted;
 			_serviceProvider = serviceProvider;
 		}
 
 		private void OnShutdownFinished(object? sender, EventArgs e)
 		{
-			if (_shutdownTask.Task.Result is { IsCompleted: false } disposeTask)
+			if (_shutdownTask is { IsCompleted: false } disposeTask)
 			{
 				disposeTask.GetAwaiter().GetResult();
 			}
@@ -78,7 +82,7 @@ static class Program
 		private void OnShutdownStarted(object? sender, EventArgs e)
 		{
 #pragma warning disable CA2012 // This will only ever be awaited once in ShutdownFinished
-			_shutdownTask.SetResult(_serviceProvider.DisposeAsync());
+			_shutdownTask = _serviceProvider.DisposeAsync();
 #pragma warning restore CA2012
 		}
 	}

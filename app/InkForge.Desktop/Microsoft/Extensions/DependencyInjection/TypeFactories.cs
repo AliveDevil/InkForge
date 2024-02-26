@@ -1,5 +1,13 @@
 namespace Microsoft.Extensions.DependencyInjection
 {
+	public static class TypeFactory
+	{
+		public static T Create<T>(IServiceProvider serviceProvider)
+		{
+			return TypeFactory<EmptyArguments, T>.Create(serviceProvider, default);
+		}
+	}
+
 	public static class TypeFactory<TArguments, T>
 		where TArguments : IFactoryArguments<TArguments>
 	{
@@ -10,6 +18,13 @@ namespace Microsoft.Extensions.DependencyInjection
 			s_objectFactory ??= ActivatorUtilities.CreateFactory<T>(TArguments.Types);
 			return s_objectFactory(serviceProvider, (object[])factory);
 		}
+	}
+
+	public readonly struct EmptyArguments : IFactoryArguments<EmptyArguments>
+	{
+		public static Type[] Types => [];
+
+		public static implicit operator object[](in EmptyArguments _) => [];
 	}
 
 	public interface IFactoryArguments<T>

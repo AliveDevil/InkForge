@@ -1,28 +1,28 @@
-using System.Collections.ObjectModel;
 using System.Reactive;
 
 using Avalonia.Platform.Storage;
+
+using Dock.Model.ReactiveUI.Controls;
 
 using InkForge.Desktop.Managers;
 using InkForge.Desktop.Services;
 
 using ReactiveUI;
 
-namespace InkForge.Desktop.ViewModels;
+namespace InkForge.Desktop.ViewModels.Documents;
 
-public class LandingViewModel : ReactiveObject
+public class WelcomePageDocumentViewModel : Document
 {
-	private ReadOnlyObservableCollection<RecentItemViewModel> _recentItems;
 	private readonly WorkspaceManager _workspaceController;
 
 	public ReactiveCommand<Unit, Unit> CreateNew { get; }
 
 	public ReactiveCommand<Unit, Unit> OpenNew { get; }
 
-	public ReadOnlyObservableCollection<RecentItemViewModel> RecentItems => _recentItems;
-
-	public LandingViewModel(WorkspaceManager workspaceController)
+	public WelcomePageDocumentViewModel(WorkspaceManager workspaceController)
 	{
+		Title = "Welcome";
+		
 		_workspaceController = workspaceController;
 		CreateNew = ReactiveCommand.CreateFromTask(OnCreateNew);
 		OpenNew = ReactiveCommand.CreateFromTask(OnOpenNew);
