@@ -1,26 +1,50 @@
 using InkForge.Desktop.Models;
 
-namespace InkForge.Desktop.ViewModels.Workspaces;
+using Microsoft.Extensions.DependencyInjection;
 
-public class WorkspaceViewModel(Workspace workspace)
+namespace InkForge.Desktop.ViewModels.Workspaces
 {
-	// private readonly Workspace _workspace;
-	// private readonly ObservableAsPropertyHelper<string> _workspaceNameProperty;
+	public class WorkspaceViewModel(Workspace workspace)
+	{
+		// private readonly Workspace _workspace;
+		// private readonly ObservableAsPropertyHelper<string> _workspaceNameProperty;
 
-	// public string WorkspaceName => _workspaceNameProperty.Value;
+		// public string WorkspaceName => _workspaceNameProperty.Value;
 
-	// public ReactiveCommand<Unit, Unit> AddDocument { get; }
+		// public ReactiveCommand<Unit, Unit> AddDocument { get; }
 
-	// public WorkspacesViewModel(Workspace workspace)
-	// {
-	// 	_workspace = workspace;
-	// 	_workspaceNameProperty = this.WhenAnyValue(v => v._workspace.Name).ToProperty(this, nameof(WorkspaceName));
+		// public WorkspacesViewModel(Workspace workspace)
+		// {
+		// 	_workspace = workspace;
+		// 	_workspaceNameProperty = this.WhenAnyValue(v => v._workspace.Name).ToProperty(this, nameof(WorkspaceName));
 
-	// 	AddDocument = ReactiveCommand.Create(OnAddDocument);
-	// }
+		// 	AddDocument = ReactiveCommand.Create(OnAddDocument);
+		// }
 
-	// private void OnAddDocument()
-	// {
+		// private void OnAddDocument()
+		// {
 
-	// }
+		// }
+	}
+
+	public interface IWorkspaceViewModelFactory
+	{
+		WorkspaceViewModel Create(Workspace workspace);
+	}
+
+	namespace Internal
+	{
+		internal class WorkspaceViewModelFactory(IServiceProvider services) : IWorkspaceViewModelFactory
+		{
+			private static ObjectFactory<WorkspaceViewModel>? s_workspaceViewModelFactory;
+
+			public WorkspaceViewModel Create(Workspace workspace)
+			{
+				s_workspaceViewModelFactory ??= ActivatorUtilities.CreateFactory<WorkspaceViewModel>([typeof(Workspace)]);
+				return s_workspaceViewModelFactory(services, [workspace]);
+			}
+
+			WorkspaceViewModel IWorkspaceViewModelFactory.Create(Workspace workspace) => Create(workspace);
+		}
+	}
 }

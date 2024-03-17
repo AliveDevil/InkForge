@@ -10,5 +10,29 @@
              x:Class="InkForge.Desktop.Views.Documents.WelcomePageDocument"
              x:DataType="vm:WelcomePageDocumentViewModel"
              inkforge:TopLevels.Register="{CompiledBinding}">
-  Welcome to Avalonia!
+  <Grid RowDefinitions="Auto, *, Auto">
+    <Label Target="RecentItemsList"
+           Content="Open Recent"
+           Grid.Row="0" />
+
+    <DataGrid Name="RecentItemsList"
+              IsEnabled="False"
+              IsReadOnly="True"
+              Grid.Row="1">
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="Name"
+                            Width="*" />
+        <DataGridTextColumn Header="Last Used" />
+      </DataGrid.Columns>
+    </DataGrid>
+
+    <Menu Grid.Row="2">
+      <MenuItem Header="Create New"
+                Command="{CompiledBinding CreateNew}" />
+      <MenuItem Header="Open"
+                IsEnabled="False" />
+      <MenuItem Header="Open File"
+                Command="{CompiledBinding OpenNew}" />
+    </Menu>
+  </Grid>
 </UserControl>

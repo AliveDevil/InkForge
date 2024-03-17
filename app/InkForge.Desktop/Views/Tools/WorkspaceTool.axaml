@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="using:InkForge.Desktop.Views.Tools"
+             xmlns:workspaces="using:InkForge.Desktop.Views.Workspaces"
+             xmlns:vm="using:InkForge.Desktop.ViewModels.Tools"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="InkForge.Desktop.Views.Tools.WorkspaceTool"
+             x:DataType="vm:WorkspaceTool"
+             Classes.HasWorkspace="{CompiledBinding Workspace, Converter={x:Static ObjectConverters.IsNotNull}}">
+
+  <UserControl.Styles>
+    <Style Selector="local|WorkspaceTool">
+      <Setter Property="Content">
+        <Template>
+          <TextBlock>No workspace selected.</TextBlock>
+        </Template>
+      </Setter>
+
+      <Style Selector="^.HasWorkspace">
+        <Setter Property="Content">
+          <Template>
+            <workspaces:WorkspaceView DataContext="{CompiledBinding Workspace}" />
+          </Template>
+        </Setter>
+      </Style>
+    </Style>
+  </UserControl.Styles>
+</UserControl>

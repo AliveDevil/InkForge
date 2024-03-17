@@ -1,16 +1,17 @@
+using Avalonia.Controls.Templates;
+
+using Dock.Model.Core;
+
 using InkForge.Data;
+using InkForge.Desktop;
 using InkForge.Desktop.Data;
 using InkForge.Desktop.Data.Options;
-using InkForge.Desktop.Dock;
 using InkForge.Desktop.Managers;
 using InkForge.Desktop.Models;
-using InkForge.Desktop.ViewModels;
+using InkForge.Desktop.ViewModels.Workspaces;
+using InkForge.Desktop.ViewModels.Workspaces.Internal;
 
 using Microsoft.EntityFrameworkCore;
-
-using ReactiveUI;
-
-using Splat;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -23,9 +24,12 @@ public static class InkForgeServiceCollections
 		// Singletons
 		// - Concrete
 		services.AddSingleton<DocumentManager>();
-		services.AddSingleton<WorkspaceFactory>();
+		services.AddSingleton<InkForgeFactory>();
 		services.AddSingleton<WorkspaceManager>();
-		services.AddSingleton<WorkspacesViewModel>();
+
+		// - Service
+		services.AddSingleton<IDataTemplate, AppViewLocator>();
+		services.AddSingleton<IWorkspaceViewModelFactory, WorkspaceViewModelFactory>();
 
 		// Scoped
 		// - Concrete
@@ -37,8 +41,6 @@ public static class InkForgeServiceCollections
 
 		// - Forwarders
 		services.AddScoped(s => s.GetRequiredService<IWorkspaceContext>().Workspace!);
-
-		Locator.CurrentMutable.RegisterViewsForViewModels(typeof(InkForgeServiceCollections).Assembly);
 
 		return services;
 	}

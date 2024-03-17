@@ -21,8 +21,9 @@ public class WelcomePageDocumentViewModel : Document
 
 	public WelcomePageDocumentViewModel(WorkspaceManager workspaceController)
 	{
+		CanClose = false;
 		Title = "Welcome";
-		
+
 		_workspaceController = workspaceController;
 		CreateNew = ReactiveCommand.CreateFromTask(OnCreateNew);
 		OpenNew = ReactiveCommand.CreateFromTask(OnOpenNew);
@@ -33,7 +34,7 @@ public class WelcomePageDocumentViewModel : Document
 		var storageProvider = this.GetStorageProvider()!;
 
 		var documents = await storageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Documents);
-		var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+		var file = await storageProvider.SaveFilePickerAsync(new()
 		{
 			DefaultExtension = ".ifdb",
 			FileTypeChoices =
@@ -60,7 +61,7 @@ public class WelcomePageDocumentViewModel : Document
 		var storageProvider = this.GetStorageProvider()!;
 
 		var documents = await storageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Documents);
-		var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+		var files = await storageProvider.OpenFilePickerAsync(new()
 		{
 			AllowMultiple = false,
 			SuggestedStartLocation = documents,

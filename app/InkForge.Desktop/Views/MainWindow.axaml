@@ -2,12 +2,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:inkforge="app:InkForge"
         xmlns:local="using:InkForge.Desktop.Views"
+        xmlns:vm="using:InkForge.Desktop.ViewModels"
         mc:Ignorable="d"
         Width="800"
         Height="450"
         x:Class="InkForge.Desktop.Views.MainWindow"
-        Title="MainWindow">
+        x:DataType="vm:MainViewModel"
+        Title="MainWindow"
+        inkforge:TopLevels.Register="{CompiledBinding}">
   <NativeMenu.Menu>
     <NativeMenu />
   </NativeMenu.Menu>
@@ -15,13 +19,6 @@
   <DockPanel>
     <NativeMenuBar DockPanel.Dock="Top" />
 
-    <SplitView IsPaneOpen="true"
-               DisplayMode="Inline">
-      <SplitView.Pane>
-        <local:WorkspacesView />
-      </SplitView.Pane>
-
-      <local:DocumentsView />
-    </SplitView>
+    <DockControl Layout="{CompiledBinding Layout}" />
   </DockPanel>
 </Window>

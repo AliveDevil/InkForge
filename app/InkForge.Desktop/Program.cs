@@ -1,17 +1,13 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Metadata;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 
 using InkForge.Desktop;
-using InkForge.Desktop.ViewModels;
+using InkForge.Desktop.Views;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using ReactiveUI;
 
 static class Program
 {
@@ -41,6 +37,11 @@ static class Program
 		var serviceProvider = services.BuildServiceProvider();
 		app.SetValue(App.ServiceProviderProperty, serviceProvider);
 		_ = new ServiceProviderDisposer(serviceProvider, dispatcher);
+		_ = app.ApplicationLifetime switch
+		{
+			IClassicDesktopStyleApplicationLifetime desktop => desktop.MainWindow = new MainWindow(),
+			_ => throw new NotSupportedException(),	
+		};
 	}
 
 	private static AppBuilder UseMicrosoftDependencyInjection(this AppBuilder builder, out ConfigurationManager configuration)
@@ -48,7 +49,7 @@ static class Program
 		configuration = new();
 		ServiceCollection services = [];
 		services.AddSingleton<IConfiguration>(configuration);
-		App.Configure(services);
+		App.Configure(services, configuration);
 
 		builder.AfterSetup(services.SetupApp);
 		return builder;

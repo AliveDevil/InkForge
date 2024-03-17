@@ -1,11 +1,12 @@
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml;
-using Avalonia.Metadata;
 
-using InkForge.Desktop.Views;
+using DynamicData;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 using ReactiveUI;
 
@@ -16,15 +17,34 @@ namespace InkForge.Desktop;
 
 public partial class App : Application
 {
+	public static readonly StyledProperty<IDataTemplate> AppDataTemplateProperty
+		= AvaloniaProperty.Register<App, IDataTemplate>(
+			name: nameof(AppDataTemplate),
+			coerce: OnAppDataTemplateChanged);
 	public static readonly StyledProperty<IServiceProvider> ServiceProviderProperty
 		= AvaloniaProperty.Register<App, IServiceProvider>(
 			name: nameof(ServiceProvider),
 			coerce: OnServiceProviderChanged);
 
+	public IDataTemplate AppDataTemplate => GetValue(AppDataTemplateProperty);
+
 	public IServiceProvider ServiceProvider => GetValue(ServiceProviderProperty);
 
-	public static void Configure(IServiceCollection services)
+	public static void Configure(IServiceCollection services, ConfigurationManager configuration)
 	{
+		configuration.SetBasePath(AppContext.BaseDirectory);
+		configuration.AddJsonFile(
+			new ManifestEmbeddedFileProvider(typeof(App).Assembly),
+			"Properties/appsettings.json", false, false);
+		configuration.AddJsonFile(
+			Path.Combine(
+				Environment.GetFolderPath(
+					Environment.SpecialFolder.ApplicationData,
+					Environment.SpecialFolderOption.DoNotVerify),
+				"InkForge",
+				"usersettings.json"), true, true);
+		configuration.AddJsonFile("appsettings.json", true, true);
+
 		services.UseMicrosoftDependencyResolver();
 		Locator.CurrentMutable.InitializeSplat();
 		Locator.CurrentMutable.InitializeReactiveUI();
@@ -37,18 +57,34 @@ public partial class App : Application
 		AvaloniaXamlLoader.Load(this);
 	}
 
-	public override void OnFrameworkInitializationCompleted()
+	private static IDataTemplate OnAppDataTemplateChanged(AvaloniaObject @object, IDataTemplate dataTemplate)
 	{
-		_ = ApplicationLifetime switch
+		var host = (IDataTemplateHost)@object;
+		var original = @object.GetValue(AppDataTemplateProperty);
+
+		if (original is null && dataTemplate is not null)
 		{
-			IClassicDesktopStyleApplicationLifetime desktop => desktop.MainWindow = new MainWindow(),
-			_ => throw new NotSupportedException(),
-		};
+			host.DataTemplates.Add(dataTemplate);
+		}
+		else if (original is not null)
+		{
+			if (dataTemplate is null)
+			{
+				host.DataTemplates.Remove(original);
+			}
+			else
+			{
+				host.DataTemplates.ReplaceOrAdd(original, dataTemplate);
+			}
+		}
+
+		return dataTemplate!;
 	}
 
 	private static IServiceProvider OnServiceProviderChanged(AvaloniaObject @object, IServiceProvider provider)
 	{
 		provider.UseMicrosoftDependencyResolver();
+		@object.SetValue(AppDataTemplateProperty, provider.GetRequiredService<IDataTemplate>());
 		return provider;
 	}
 }

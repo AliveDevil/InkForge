@@ -28,11 +28,6 @@ public sealed class Workspace : IDisposable
 	// {
 	// }
 
-	public T CreateViewModel<T>()
-	{
-		return TypeFactory.Create<T>(Services);
-	}
-
 	public void Dispose()
 	{
 		Dispose(disposing: true);
@@ -43,8 +38,12 @@ public sealed class Workspace : IDisposable
 	{
 		if (!_disposedValue)
 		{
-			_scope!.Dispose();
-			_scope = null;
+			if (_scope is { })
+			{
+				_scope.Dispose();
+				_scope = null;
+			}
+
 			_disposedValue = true;
 		}
 	}

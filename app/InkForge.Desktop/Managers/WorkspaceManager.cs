@@ -20,14 +20,14 @@ public class WorkspaceManager(IServiceProvider serviceProvider) : ReactiveObject
 		private set => this.RaiseAndSetIfChanged(ref _workspace, value);
 	}
 
-	public Task CloseWorkspace()
+	public ValueTask CloseWorkspace()
 	{
 		_workspace?.Dispose();
 		Workspace = null;
-		return Task.CompletedTask;
+		return ValueTask.CompletedTask;
 	}
 
-	public async Task OpenWorkspace(string path, bool createFile = false)
+	public async ValueTask OpenWorkspace(string path, bool createFile = false)
 	{
 		await CloseWorkspace().ConfigureAwait(false);
 		if (await CreateLocalWorkspace(path, createFile).ConfigureAwait(false) is { } workspace)
