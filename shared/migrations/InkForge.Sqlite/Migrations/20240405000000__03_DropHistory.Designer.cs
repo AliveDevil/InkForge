@@ -3,6 +3,7 @@ using System;
 using InkForge.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InkForge.Sqlite.Migrations
 {
     [DbContext(typeof(NoteDbContext))]
-    partial class NoteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240405000000__03_DropHistory")]
+    partial class _03_DropHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
@@ -28,7 +31,7 @@ namespace InkForge.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Blobs", (string)null);
+                    b.ToTable("Blobs");
                 });
 
             modelBuilder.Entity("InkForge.Data.MetadataEntity", b =>
@@ -42,7 +45,7 @@ namespace InkForge.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Metadata", (string)null);
+                    b.ToTable("Metadata");
                 });
 
             modelBuilder.Entity("InkForge.Data.NoteEntity", b =>
@@ -58,7 +61,7 @@ namespace InkForge.Sqlite.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Notes", (string)null);
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("InkForge.Data.NoteEntity", b =>
@@ -67,7 +70,7 @@ namespace InkForge.Sqlite.Migrations
                         .WithMany()
                         .HasForeignKey("ParentId");
 
-                    b.OwnsOne("InkForge.Data.NoteEntity.Value#InkForge.Data.Note", "Value", b1 =>
+                    b.OwnsOne("InkForge.Data.Note", "Value", b1 =>
                         {
                             b1.Property<int>("NoteEntityId")
                                 .HasColumnType("INTEGER");
@@ -93,7 +96,7 @@ namespace InkForge.Sqlite.Migrations
 
                             b1.HasIndex("ContentId");
 
-                            b1.ToTable("Notes", (string)null);
+                            b1.ToTable("Notes");
 
                             b1.HasOne("InkForge.Data.Blob", "Content")
                                 .WithMany()

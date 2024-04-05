@@ -22,7 +22,7 @@ public class InkForgeFactory : Factory
 			IsCollapsable = false,
 		};
 
-		_documentDock = new InkForgeDocumentDock
+		_documentDock = new DocumentDock
 		{
 			Id = "Documents",
 			Title = "Documents",

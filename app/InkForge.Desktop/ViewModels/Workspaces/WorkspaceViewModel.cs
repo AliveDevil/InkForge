@@ -4,14 +4,19 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace InkForge.Desktop.ViewModels.Workspaces
 {
-	public class WorkspaceViewModel(Workspace workspace)
+	public class WorkspaceViewModel
 	{
-		// private readonly Workspace _workspace;
+		private readonly NoteStore _noteStore;
 		// private readonly ObservableAsPropertyHelper<string> _workspaceNameProperty;
 
 		// public string WorkspaceName => _workspaceNameProperty.Value;
 
 		// public ReactiveCommand<Unit, Unit> AddDocument { get; }
+
+		public WorkspaceViewModel(NoteStore noteStore)
+		{
+			_noteStore = noteStore;
+		}
 
 		// public WorkspacesViewModel(Workspace workspace)
 		// {

@@ -62,25 +62,24 @@ public class WorkspaceManager(IServiceProvider serviceProvider) : ReactiveObject
 			};
 
 			var dbFactory = serviceProvider.GetRequiredService<IDbContextFactory<NoteDbContext>>();
-			await using (var dbContext = dbFactory.CreateDbContext())
+			await using var dbContext = await dbFactory.CreateDbContextAsync().ConfigureAwait(false);
+			var db = dbContext.Database;
+			if ((await db.GetPendingMigrationsAsync().ConfigureAwait(false)).Any())
 			{
-				var db = dbContext.Database;
-				await using var transaction = await db.BeginTransactionAsync().ConfigureAwait(false);
-				try
+				if (file.Exists)
 				{
-					await db.MigrateAsync().ConfigureAwait(false);
-				}
-				catch
-				{
-					// Show Error through TopLevels.ActiveTopLevel
-					await transaction.RollbackAsync().ConfigureAwait(false);
-					return null;
+					file.CopyTo(Path.ChangeExtension(file.FullName, $"{DateTime.Now:s}{file.Extension}"));
 				}
 
-				await transaction.CommitAsync().ConfigureAwait(false);
+				await db.MigrateAsync().ConfigureAwait(false);
 			}
 
 			scope = null;
+		}
+		catch (Exception)
+		{
+			// Show Error through TopLevels.ActiveTopLevel
+			return null;
 		}
 		finally
 		{

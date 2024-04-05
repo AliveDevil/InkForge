@@ -1,14 +1,11 @@
-using InkForge.Data;
 using InkForge.Desktop.Data.Options;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InkForge.Desktop.Models;
 
 public sealed class Workspace : IDisposable
 {
-	private readonly IDbContextFactory<NoteDbContext> _dbContextFactory;
 	private bool _disposedValue;
 	private IServiceScope? _scope;
 
@@ -21,20 +18,9 @@ public sealed class Workspace : IDisposable
 	public Workspace(IServiceScope scope)
 	{
 		_scope = scope;
-		_dbContextFactory = Services.GetRequiredService<IDbContextFactory<NoteDbContext>>();
 	}
-
-	// public Note AddNote(Note? parent)
-	// {
-	// }
 
 	public void Dispose()
-	{
-		Dispose(disposing: true);
-		GC.SuppressFinalize(this);
-	}
-
-	private void Dispose(bool disposing)
 	{
 		if (!_disposedValue)
 		{
@@ -47,4 +33,14 @@ public sealed class Workspace : IDisposable
 			_disposedValue = true;
 		}
 	}
+
+	// private async Task LoadNotes()
+	// {
+	// 	await using var dbContext = await _dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
+	// 	await foreach (var asdf in dbContext.Notes.AsAsyncEnumerable().ConfigureAwait(false))
+	// 	{
+
+	// 	}
+	// 	_ = (await dbContext.Notes.ToListAsync().ConfigureAwait(false));
+	// }
 }

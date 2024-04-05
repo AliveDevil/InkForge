@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace InkForge.Data
 {
 	public abstract class ValueEntity<TEntity>
@@ -10,14 +8,13 @@ namespace InkForge.Data
 	public abstract class Entity<TEntity, TKey>
 		: ValueEntity<TEntity>
 	{
-		public TKey? Id { get; set; }
+		public TKey Id { get; set; } = default!;
 	}
 
-	public abstract class VersionedEntity<TEntity, TKey>
-		: ValueEntity<TEntity>
+	public abstract class Entity<TSelf, TEntity, TKey>
+		: Entity<TEntity, TKey>
+		where TSelf : Entity<TSelf, TEntity, TKey>
 	{
-		public TKey Id { get; set; }
-
-		public int? Version { get; set; }
+		public TSelf? Parent { get; set; }
 	}
 }

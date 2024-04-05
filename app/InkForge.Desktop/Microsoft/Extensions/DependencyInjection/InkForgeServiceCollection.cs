@@ -34,6 +34,7 @@ public static class InkForgeServiceCollections
 		// Scoped
 		// - Concrete
 		services.AddScoped<LocalWorkspaceOptions>();
+		services.AddScoped<NoteStore>();
 
 		// - Service
 		services.AddScoped<IDbContextFactory<NoteDbContext>, NoteDbContextFactory>();

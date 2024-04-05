@@ -20,7 +20,7 @@
                 Spacing="3"
                 Grid.Column="1"
                 Grid.Row="0">
-      <Button>
+      <Button AutomationProperties.Name="Add">
         <inkforge:FluentSymbolIcon Symbol="document_add" />
       </Button>
       <Button>

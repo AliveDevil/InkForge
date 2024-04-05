@@ -8,6 +8,7 @@
     <AssemblyName>InkForge</AssemblyName>
     <RootNamespace>InkForge.Desktop</RootNamespace>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    <!-- <TrimMode>partial</TrimMode> -->
   </PropertyGroup>
 
   <ItemGroup>
